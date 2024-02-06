@@ -30,22 +30,36 @@ class ClickNTime {
     unsigned long timeset = 500;
 
   public:  
-    void PinConfig(u_int8_t pin, u_int8_t n = 1, bool verbose = false);
 
+    // * Main Functions
+    void PinConfig(u_int8_t pin, u_int8_t n = 1, bool verbose = false);
     void SetTime(unsigned long time);
+    void ClearStatus();
     bool Click_N_Time();
     bool GetClickStatus();
 };
 
 void ClickNTime::PinConfig(u_int8_t pin, u_int8_t n, bool verbose){
+  // * Set Pin Mode
   pinMode(Pin, INPUT);
+  
+  // * Prepare Variables
   Pin = pin;
   N = n;
   Verbose = verbose;
 }
 
 void ClickNTime::SetTime(unsigned long time){
+  // * Set Time | Default is 500ms
   timeset = time;
+}
+
+void ClickNTime::ClearStatus(){
+  // * set everything to 0
+  Cout = 0;
+  bounce = 0;
+  lastBounce = 0;
+  Status = 0;
 }
 
 bool ClickNTime::Click_N_Time(){
@@ -69,7 +83,7 @@ bool ClickNTime::Click_N_Time(){
       ntime = 0;
     }
 
-    if(Cout >= N){
+    if(Cout > N-1){
       Cout = 0;
       Status = !Status;
     }
